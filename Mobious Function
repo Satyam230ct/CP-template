@@ -1,0 +1,28 @@
+// Mobious Function
+
+ll mobious[MAX];
+ll count_prime[MAX];
+ll a[MAX];
+void cal_mobiuos()
+{   
+    // For even power of number=0
+    // Not even but odd prime count=-1
+    // Not even power but even prime count=1
+    FR(i,1,MAX)a[i]=1,count_prime[i]=0;
+    for(ll i=2;i<MAX;i++)
+    if(count_prime[i]==0)
+    {
+        for(ll j=i;j<MAX;j+=i)
+        {
+            a[j]*=i;
+            count_prime[j]++;
+        }
+    }
+    for(ll i=1;i<MAX;i++)
+    if(a[i]==i)
+    {
+        if(count_prime[i]&1)mobious[i]=-1;
+        else mobious[i]=1;
+    }
+    else mobious[i]=0;
+}
