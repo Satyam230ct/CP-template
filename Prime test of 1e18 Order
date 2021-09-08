@@ -1,0 +1,59 @@
+
+//--- Primality Test (Miller-Rabin) (for 1e18)  n<3825123056546413051
+
+ll modular_multiplication(ll a,ll b,ll n){
+    ll res=0;
+    while(b){
+        if(b & 1ll)res+=a;
+        a*=2;   b/=2;   res%=n; a%=n;
+    }
+    return res;
+}
+// (a^b)%n
+ll modular_exponentiation(ll a,ll b,ll n)
+{
+    ll res=1;
+    while(b)
+    {
+        if(b& 1ll){
+            res=modular_multiplication(res,a,n);
+        }
+        a=modular_multiplication(a,a,n);
+        a%=n;
+        b/=2;
+    }
+    return res;
+}
+
+bool miller_rabin(ll n)
+{
+    if(n==2)return true;
+    if(n==1 or n%2==0)return false;
+    // now my n is odd n-1 is even
+    ll d=n-1,s=0;
+    while(d%2==0){
+        s++;    d/=2;
+    }
+    // n-1= d*pow(2,s)
+    vector<ll> a={2,3,5,7,11,13,17,19,23};  
+    // a represent as random numbers
+    for(ll i=0;i<a.size();i++){
+        if(a[i]>n-2)continue;
+        // (a[i]^d)%n
+        ll ad=modular_exponentiation(a[i],d,n);
+        if(ad%n==1)continue;
+        bool prime=false;
+        for(ll r=0;r<=s-1;r++){
+            // (2^r)%n
+            ll rr=modular_exponentiation(2,r,n);
+            // (a^(d*2*i))%n
+            ll ard=modular_exponentiation(ad,rr,n);
+            if(ard%n==n-1){
+                prime=true;
+                break;
+            }
+        }
+        if(prime==false)return false;
+    }
+    return true;
+}
