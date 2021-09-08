@@ -1,0 +1,39 @@
+
+// Recursion Implementation
+
+// 1) Quick Sort Implementation O(nlogn)  
+        //if Not accepted then use Merge Sort but it will take more memory  
+ll pivort(int *a,ll s,ll e)
+{
+    ll i=s-1,j=s;
+    for(;j<=e-1;j++)
+    {
+        if(a[j]<=a[e])
+        {
+            i+=1;
+            swap(a[i],a[j]);
+        }
+    }
+    i++;
+    swap(a[e],a[i]);
+    return i;
+}
+
+void quick_sort(int *a,ll s,ll e)
+{
+    if(s>=e)return;
+    ll p=pivort(a,s,e);
+    quick_sort(a,s,p-1);
+    quick_sort(a,p+1,e);
+}
+
+// 2) Tower Of Hanoi
+
+void helper(ll n,char src,char dest,char hep)
+{
+    if(n==0)return;
+    helper(n-1,src,hep,dest);
+    cout<<n<<" "<<src<<" to "<<dest<<'\n';
+    helper(n-1,hep,dest,src);
+}
+
