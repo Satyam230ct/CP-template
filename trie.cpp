@@ -1,13 +1,3 @@
-// Author- Grandmaster yaduvans_hi *_*
-#include <bits/stdc++.h>
-using namespace std;
-#define int                     long long
-#define nl                      cout<<"\n";
-#define deb(x)                  cout<<(#x)<<" = "<<(x)<<"\n";
-
-const long long mod=1000000007,inf=(9e17),MAX=2e5+5;
-int n,m,i,j;
-
 // Trie Implementation
 //- Use for Dictionary matching or contact number problems
 
@@ -68,11 +58,7 @@ public:
 
 };
 
-
-
-
-void solve()
-{
+signed main(){
     Trie t;
     char words[][10]={"a","hello","not","news","apple"};   
     char w[10];
@@ -82,18 +68,5 @@ void solve()
     cin>>w;
 
     if(t.find(w))cout<<"Present";
-    else cout<<"Absent";
-}
-
-signed main(){
-   
-//    Every Champion was a contender that refused to give up :)
-    
-    ios_base::sync_with_stdio(false); cin.tie(NULL);  cout.tie(NULL);
-    int loser=1;
-    // cin>>loser; 
-    while(loser--){
-        solve(); nl 
-    }
-    return 0;
+    else cout<<"Absent";  
 }
