@@ -78,14 +78,14 @@ void range_update(int *tree,int ss,int se,int l,int r,int inc,int index)
     tree[index]=min(tree[2*index],tree[2*index+1]);
 }
 
-// Lazy Propogation In Segment Tree
+// # 2) Lazy Propagation In Segment Tree
 
 // ~Simple Idea is postpone the update to decedants of a Node
 //  Until the decendants themselves need to be accessed.
 
 int lazy[MAX];
 
-void updateRangeLazy(int *tree,int ss,int se,int l,int r,int index)
+void updateRangeLazy(int *tree,int ss,int se,int l,int r,int inc,int index)
 {
     // before going down resolve the value if it exists
     if(lazy[index]!=0)
@@ -107,18 +107,66 @@ void updateRangeLazy(int *tree,int ss,int se,int l,int r,int index)
     // Another Case- complete overlap case
     if(ss>=l and se<=r)
     {
+        tree[index]+=inc;   // As due to maxi and mini we not need casre about whole l r range
+        if(ss!=se)  // Create New lzy Value of child node
+        {
+            lazy[2*index]+=inc; // Passing inc to left Child
+            lazy[2*index+1]+=inc; // Passing inc to right Child
+        }
+        return; // Imp to avoid full update of tree
+    }
+    // partial Overlap
+    int mid=(ss+se)/2;
+    updateRangeLazy(tree,ss,mid,l,r,inc,2*index);
+    updateRangeLazy(tree,mid+1,se,l,r,inc,2*index+1);
+    tree[index]=min(tree[2*index],tree[2*index+1]);
+}
+
+// Code For Query Lazy Function
+
+int queryLazy(int *tree,int ss,int se,int qs,int qe,int index)
+{
+     // Resolve the lazy value at current node
+    if(lazy[index]!=0)
+    {
         tree[index]+=lazy[index];
-        if(ss!=se)
+        if(ss!=se)  // Non Leaf Node
         {
             lazy[2*index]+=lazy[index];
             lazy[2*index+1]+=lazy[index];
         }
-        lazy[index]=0; 
+        lazy[index]=0; // Clear the lazy value at current node
+    }
+    // Quety Logic
+
+    // No Overlap
+    if(ss>qe or se<qs)
+    {
+        INT_MAX;
     }
 
-    // partial Overlap
-    int mid=(ss+se)/2;
-    updateRangeLazy(tree,ss,mid,l,r,2*index);
-    updateRangeLazy(tree,mid+1,se,l,r,2*index+1);
-    tree[index]=min(tree[2*index],tree[2*index+1]);
+    // Complete Overlap
+    if(ss>=qs and se<=qe)
+    {
+        return tree[index];
+    }
+
+    // Partial Overlap
+    int mid=(ss+se)>>1;
+    int left=queryLazy(tree,ss,mid,qs,qe,index<<1);
+    int right=queryLazy(tree,mid+1,se,qs,qe,index<<1|1);
+    return min(left,right);
+}
+
+//TODO: Range Sum with Lazy Propagation
+
+
+void solve()
+{
+    int a[]={1,3,2,-5,6,4};
+    int n=sizeof(a)/sizeof(a[0]);
+    int *tree= new int [4*n+1];
+    build(a,0,n-1,tree,1);
+    // Let's Also Print the tree array
+    for(i=1;i<=13;i++)cout<<tree[i]<<" ";
 }
