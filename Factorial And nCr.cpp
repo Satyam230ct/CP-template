@@ -5,7 +5,7 @@ int poww(const int &a,int b,const int &m=mod)
     {if(b==0)return 1;
             int x=poww(a,b/2,m);x=x*x%m;if(b&1)x=x*a%m;return x;} 
 
-ll fact[MAX]; ll invfac[MAX];
+int fact[MAX]; int invfac[MAX];
 
 int mod_inv(int a,int m){
     a=a%m;
