@@ -10,7 +10,7 @@ void build(int *a,int s,int e,int *tree,int index)
     int mid=(s+e)/2;
     build(a,s,mid,tree,2*index);
     build(a,mid+1,e,tree,2*index+1);
-    tree[index]=min(tree[index],tree[2*index+1]);
+    tree[index]=min(tree[2*index],tree[2*index+1]);
     return;
 }
 
