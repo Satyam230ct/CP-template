@@ -15,5 +15,5 @@ ll extendedEuclidMethod(ll a,ll b)
     y=cy;
     return x;
 }
-// If gcd(a,b)==1 then inverse Exist
+// If gcd(a,b)==1 then inverse of a Exist wrt b
 inverse=(extendedEuclidMethod(a,b)+b)%b;
