@@ -1,5 +1,0 @@
-//--- Chinese Remainder Theorem
-
-x= Summation (rem[i]*ppi[i]*inv[i])%product;
-ppi=product/num[i];
-inv[i]=inverse of ppi[i] w.r.t num[i]
