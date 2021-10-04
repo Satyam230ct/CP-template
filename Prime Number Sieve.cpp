@@ -57,3 +57,27 @@ for(auto x:prime)
     for(i=start;i<=n;i+=x)
     segment[i-m]=1;    
 }
+// ----------------------------------------------------------------------
+// Factorization of a Number using this Sieve :
+vector <ll> factorize(ll m)
+{
+    vector <ll> factors;
+    factors.clear();
+    ll i = 0;
+    ll p = primes[i];
+    while(p*p <= m)
+    {
+        if(m%p == 0)
+        {
+            factors.pb(p);
+            while(m%p == 0)
+                m = m/p;
+            }
+                 i++;
+               p = primes[i];
+    }
+    if(m!=1)
+    factors.pb(m);
+    return factors;
+}
+
