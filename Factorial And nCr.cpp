@@ -17,6 +17,7 @@ int ncr(int n,int r){
     int a=fact[n],b=invfac[r],c=invfac[n-r];
     return (a*((b*c)%mod))%mod;   
 }
+
 void count_fact(){
 
     int i,x=1;
@@ -27,4 +28,15 @@ void count_fact(){
         fact[i]=x;
         invfac[i]=mod_inv(fact[i],mod);
     }
+}
+--------------------------------------------------------------------
+int ncr_linear(int n,int r){
+    int res=1;
+    if(n-r<r)r=n-r;
+    for(int i=1;i<=r;i++)
+    {
+        res*=(n-i+1);
+        res/=i;
+    }
+    return res;
 }
