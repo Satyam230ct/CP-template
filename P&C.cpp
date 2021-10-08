@@ -90,7 +90,7 @@ void solve()
 {
     cin>>n; int r;  cin>>r;
 
-/* 1) Number Of permutation of n elements such that having k particuar chosen element and 1 max element
+/*--1) Number Of permutation of n elements such that having k particuar chosen element and 1 max element
     such that max Element always Will be on Right side of Particular Chosen Element is given as
     
     a) int ans=0;  others=(n-k-1)!;
@@ -98,17 +98,45 @@ void solve()
         ans=(ans  +  nCr(i,k)*k!*1*others)
     b) ans=(nCr(n,k+1)*k!*(n-k-1)!)
 
-    2) Star's And Bars Implementation
+----2)* ------------------- Star's And Bars Implementation-------------------
 
     a) How many non-negative solution exist for this equation X+Y=Z=A=B=C=220
-    b) How many n digit number can be formed, where the digits are in non decreasing order
+    b) How many n digit numbers can be formed, where the digits are in non decreasing order
        and each digit is from 0 to 9.
 
+       * * * * * * * * * * * * * divide this And have 3  | | | divider Now how many ways we can
+       divide these stars.
 
-    3) Cataline Number -> 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, ...
+       Sol-> Total symbols=12+3=15 Now i can puts the bars any order i want in 15 position can have star or bars
+
+       15 Solots now we have to chose 3 position for bars  given as C(15,3)
+
+       so Number of ways n candies and distribute them among k child = C(n+k-1,k-1);
+
+    c) If atleast One have to be chose then we have n-1 places for n stars and we have to chose k-1 position
+    for k cnadies
+    => Answe for atleast one star get's is = C(n-1,k-1)
+
+    d) How many 5 digit number can be formed using digit between 0-3, such that the digit in
+    number are in non decresing order.
+
+    A0 + A1 + A2 + A3 + A4 = 5  Ai= number of i digit in digit
+
+    // So this again come under the star's and bars We have to chose digit have total count n
+       Now the point is how this gonna be non decreasing ? Simply we just taking different count's here no arrangement 
+       count are takin (means permutation)
+
+       => So numer of nondecreasing array having size n and it's digit can be (0,9) are C(n+10-1,10-1);
+
+    Ex- https://codeforces.com/problemset/problem/1288/C  
+    
+    ->2m number size array we have to make such that element's are in range 1 to n
+    -> C(2m+n-1,n-1);
+
+----3) Cataline Number -> 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, ...
     Cn = C(2n,n)/(n+1)  n>=0 
 
-    4) Valid Bracket Sequence's    ( Part_1 ) Part_2 Format
+----4) Valid Bracket Sequence's    ( Part_1 ) Part_2 Format
     An = An-1 + A0 
         + An-2 + A1
         +An-3 + A2
@@ -152,12 +180,7 @@ struct Bracket_sequence
         }
         return ans[N];
     }
-
-
-
 };
-
-
 
 
 */
@@ -184,4 +207,5 @@ Number Theory
  https://codeforces.com/problemset/problem/630/I
  https://codeforces.com/problemset/problem/630/G
  https://codeforces.com/problemset/problem/1569/C
+ https://codeforces.com/problemset/problem/1288/C
 */
