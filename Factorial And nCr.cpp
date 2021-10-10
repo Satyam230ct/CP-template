@@ -31,6 +31,7 @@ void count_fact(){
 }
 --------------------------------------------------------------------
 int ncr_linear(int n,int r){
+    if(n<r)return 0;
     int res=1;
     if(n-r<r)r=n-r;
     for(int i=1;i<=r;i++)
