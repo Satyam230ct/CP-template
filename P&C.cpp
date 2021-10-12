@@ -132,6 +132,9 @@ void solve()
     
     ->2m number size array we have to make such that element's are in range 1 to n
     -> C(2m+n-1,n-1);
+    
+    e) If x1>=a x2>=b x3>=c then find x1+x2+x3=n all possible solutions
+        let x1`=x1-a the it will be same as  x1` + x2` + x3` = n-a-b-c = n` Now Apply Stars and Bars on this
 
 ----3) Cataline Number -> 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, ...
     Cn = C(2n,n)/(n+1)  n>=0 
