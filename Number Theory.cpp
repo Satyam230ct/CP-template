@@ -40,20 +40,40 @@ Euler’s Phi function (also known as totient function, a function on natural nu
 that gives the count of positive integers coprime with the corresponding natural number.
 */
 
-int phi[] = new int[n+1];
+// 1) O(nloglogn)
+int phi[MAX];      
 void fill()
 {
-    for(int i=2; i <= n; i++)
-    phi[i] = i; //phi[1] is 0
+    phi[0] = 0;
+    phi[1] = 1;
+    for (int i = 2; i <MAX; i++)
+        phi[i] = i;
 
-    int phi[] = new int[n+1];
-    for(int i=2; i <= n; i++)
-    phi[i] = i; //phi[1] is 0
+    for (int i = 2; i < MAX; i++) {
+        if (phi[i] == i) {
+            for (int j = i; j <MAX; j += i)
+                phi[j] -= phi[j] / i;
+        }
+    }
+}
+//2)  O(sq_root(n))
+int phi(int n) {
+    int result = n;
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            while (n % i == 0)
+                n /= i;
+            result -= result / i;
+        }
+    }
+    if (n > 1)
+        result -= result / n;
+    return result;
 }
 
+// Application-> Of Phi WIth GCD
 => if n is a positive integer and a, n are coprime, then aφ(n)+1 ≡ a mod n.
 
-// Application-> Of Phi WIth GCD
 
 Q-> You are given two integers a and m. (1≤a<m≤10^(10)).
 Calculate the number of integers x such that 0≤x<m and gcd(a,m)=gcd(a+x,m).
