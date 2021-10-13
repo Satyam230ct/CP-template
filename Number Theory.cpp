@@ -1,5 +1,27 @@
 //------------------------------------- Number Theory-----------------------------------
 
+gcd(a,b)=gcd(b,a%b)  ->>    gcd(a-b,b)=gcd(a,b-a)
+
+// Extended Euclidean Algorithm Also Help TO find GCD
+
+ll x,y,gcd,inverse;
+ll extendedEuclidMethod(ll a,ll b)
+{
+    if(b==0)
+    {
+        x=1;    y=0;
+        gcd=a;  return 1;
+    }
+    extendedEuclidMethod(b,a%b);
+    ll cx=y;
+    ll cy=x-(a/b)*y;
+    x=cx;
+    y=cy;
+    return x;
+}
+// If gcd(a,b)==1 then inverse of a Exist wrt b
+inverse=(extendedEuclidMethod(a,b)+b)%b;
+
 //--- -------------------------Chinese Remainder Theorem---------------------------------
 
 x= Summation (rem[i]*pp[i]*inv[i])) % prod
