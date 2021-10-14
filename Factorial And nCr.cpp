@@ -1,15 +1,15 @@
 
 // Factorial Computation
 
-int poww(const int &a,int b,const int &m=mod)
-    {if(b==0)return 1;
-            int x=poww(a,b/2,m);x=x*x%m;if(b&1)x=x*a%m;return x;} 
+int poww(int a,int b)
+    {if(b<=0)return (b==0); int res=1;
+        while(b){ if(b&1)(res*=a)%=mod;  (a*=a)%=mod; b/=2;}return res;} 
 
 int fact[MAX]; int invfac[MAX];
 
 int mod_inv(int a,int m){
     a=a%m;
-    return poww(a,m-2,m)%mod;
+    return poww(a,m-2)%mod;
 }
 
 int ncr(int n,int r){
