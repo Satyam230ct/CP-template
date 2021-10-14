@@ -1,47 +1,46 @@
 // Graph Class
 //-----------------------------------------------------------------------------------------
 class Graph{   
-    ll V;
-    list<pair<ll,ll>> *l;
+    int V;
+    list<pair<int,int>> *l;
 
 public:
-    Graph(ll v)
+    Graph(int v)
     {
         V=v;
-        l=new list<pair<ll,ll>>[V];
+        l=new list<pair<int,int>>[V];
     }
-    void addEdges(ll u,ll v,ll cost)
+    void addEdges(int u,int v,int cost)
     {
         l[u].push_back({v,cost});
         l[v].push_back({u,cost});
     }
 
-    ll dfsHelper(ll node,bool *visited,ll *count,ll &ans)
+    int dfsHelper(int node,bool *visited,int *count,int &ans)
     {
         visited[node]=true;
         count[node]=1;
         for(auto nb_p:l[node])
         {
-            ll nb=nb_p.first;
-            ll w=nb_p.second;
+            int nb=nb_p.first;
+            int w=nb_p.second;
             if(!visited[nb])
             {
                 count[node]+=dfsHelper(nb,visited,count,ans);
-                ll cx=count[nb];
-                ll cy=V-cx;
+                int cx=count[nb];
+                int cy=V-cx;
                 ans+=2*min(cx,cy)*w;
             }
         }
         return count[node];
     }
 
-    ll dfs()
+    int dfs()
     {
         bool *visited = new bool[V]{0};
-        ll *count= new ll[V]{0};
-        ll ans=0;
+        int *count= new int[V]{0};
+        int ans=0;
         dfsHelper(0,visited,count,ans);
         return ans;
     }
-
 };
