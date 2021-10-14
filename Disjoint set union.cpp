@@ -11,7 +11,7 @@ public:
         iota(parent,parent+n,0);  // Assiging p[i]=i;
     }
 
-    ll get(int x)
+    int get(int x)
     {
         return (x==parent[x])?x:(parent[x]=get(parent[x]));
     }
