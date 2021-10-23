@@ -41,3 +41,13 @@ int ncr_linear(int n,int r){
     }
     return res;
 }
+-------------------------------------------------------
+int C[20][20];
+void fil(){
+    for(i=0;i<20;i++){
+        C[i][0] = C[i][i] = 1;
+        for (int j = 1; j < i; ++j)
+            C[i][j] = C[i - 1][j] + C[i - 1][j - 1];
+    }
+}
+
