@@ -41,7 +41,7 @@ int ncr_linear(int n,int r){
     }
     return res;
 }
--------------------------------------------------------
+------------------------------------------------------------
 int C[20][20];
 void fil(){
     for(i=0;i<20;i++){
@@ -50,4 +50,22 @@ void fil(){
             C[i][j] = C[i - 1][j] + C[i - 1][j - 1];
     }
 }
-
+-------------------------------------------------------------
+    // Binomial Multiplication means if's going Out Of Bound
+int mul(int a, int b) {
+    int ans = 0;
+    while (b) {
+        if (b & 1) {
+            ans += a;
+        }
+        b = b >> 1;
+        a += a;
+        if (a > inf) {
+            a = inf;
+        }
+        if (ans > inf) {
+            ans = inf;
+        }
+    }
+    return ans;
+}
