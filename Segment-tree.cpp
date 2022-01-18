@@ -1,172 +1,142 @@
-// Segment Tree 
 
-void build(int *a,int s,int e,int *tree,int index)
-{
-    if(s==e){
-        tree[index]=a[s];   return;
-    }
-
-    // Recursive Case
-    int mid=(s+e)/2;
-    build(a,s,mid,tree,2*index);
-    build(a,mid+1,e,tree,2*index+1);
-    tree[index]=min(tree[2*index],tree[2*index+1]);
-    return;
-}
-
-int query(int *tree,int ss,int se,int qs,int qe,int index)
-{
-    // Complete Overlap
-    if(ss>=qs and se<=qe){
-        return tree[index];
-    }
-    // No Overlap
-    if(qe<ss or qs>se)
-    {
-        return INT_MAX;
-    }
-    // Partial Overlap
-    int mid=(ss+se)/2;
-    int left=query(tree,ss,mid,qs,qe,2*index);
-    int right=query(tree,mid+1,se,qs,qe,2*index+1);
-    return min(left,right);
-}
-
-// Update Queries in Segment Tree
-
-// 1) Point Update
-
-void point_update(int *tree,int ss,int se,int i,int increment,int index)
-{
-    // Case where the I is out of bounds
-    if(i<ss or i>se)return;
-    // Leaf Node
-    if(ss==se)
-    {
-        tree[index]=increment;
-        return;
-    }
-
-    // OtherWise
-    int mid=(ss+se)/2;
+struct data{
+	//Use required attributes
+	int val;
+	//Default Values
+	data() : val(0) {};
     
-    // Left Side Update
-    point_update(tree,ss,mid,i,increment,2*index);
-    // Right Side Update
-    point_update(tree,mid+1,se,i,increment,2*index+1);
-    tree[index]=min(tree[2*index],tree[2*index+1]);
-}
+    void merge(data &l, data &r) 
+	{
+		val = (l.val+r.val);    //%mod;
+	}
+};
 
-// 2) Range Update on Segment Tree i.e update range btw 3 5 by 7
-void range_update(int *tree,int ss,int se,int l,int r,int inc,int index)
+struct SegTree
 {
-    // Case where our query is out of bounds
-    if(l>se or r<ss)return;
+	int N;
+	vector<data> st;
+	vector<bool> cLazy;
+	vector<int> lazy;
 
-    // Leaf Node
-    if(ss=se)
-    {
-        tree[index]=inc;
-        return;
-    }
-    // Recursive Case
-    int mid=(ss+se)/2;
-    range_update(tree,ss,mid,l,r,inc,2*index);
-    range_update(tree,mid+1,se,l,r,inc,2*index+1);
+	void init(int n)
+	{
+		N = n;
+		st.resize(4 * N + 5);
+		cLazy.assign(4 * N + 5, false);
+		lazy.assign(4 * N + 5, 0);
+	}
+	
+	//Handle lazy propagation appriopriately
+	void propagate(int node, int L, int R)
+	{
+		if(L != R)
+		{
+			cLazy[node*2] = 1;
+			cLazy[node*2 + 1] = 1;
+			lazy[node*2] = lazy[node];
+			lazy[node*2 + 1] = lazy[node]; 
+		}
+		st[node].val = lazy[node];
+		cLazy[node] = 0;
+	}
 
-    // Updating Current case of index
-    tree[index]=min(tree[2*index],tree[2*index+1]);
-}
+	void build(int node, int L, int R,int *a)
+	{
+		if(L==R)
+		{
+			st[node].val = a[L];
+			return;
+		}
+		int M=(L + R)/2;
+		build(node*2, L, M,a);
+		build(node*2 + 1, M + 1, R,a);
+        st[node].merge(st[node*2],st[node*2+1]);
+	}
 
-// # 2) Lazy Propagation In Segment Tree
+	data Query(int node, int L, int R, int i, int j)
+	{
+		if(cLazy[node])
+			propagate(node, L, R);
+		if(j<L || i>R)
+			return data();
+		if(i<=L && R<=j)
+			return st[node];
+		int M = (L + R)/2;
+		data left=Query(node*2, L, M, i, j);
+		data right=Query(node*2 + 1, M + 1, R, i, j);
+		data cur;
+        cur.merge(left,right);
+		return cur;
+	}
 
-// ~Simple Idea is postpone the update to decedants of a Node
-//  Until the decendants themselves need to be accessed.
+	data pQuery(int node, int L, int R, int pos)
+	{
+		if(cLazy[node])
+			propagate(node, L, R);
+		if(L == R)
+			return st[node];
+		int M = (L + R)/2;
+		if(pos <= M)
+			return pQuery(node*2, L, M, pos);
+		else
+			return pQuery(node*2 + 1, M + 1, R, pos);
+	}	
 
-int lazy[MAX];
+	void Update(int node, int L, int R, int i, int j, int val)
+	{
+		if(cLazy[node])
+			propagate(node, L, R);
+		if(j<L || i>R)
+			return;
+		if(i<=L && R<=j)
+		{
+			cLazy[node] = 1;
+			lazy[node] = val;
+			propagate(node, L, R);
+			return;
+		}
+		int M = (L + R)/2;
+		Update(node*2, L, M, i, j, val);
+		Update(node*2 + 1, M + 1, R, i, j, val);
+        st[node].merge(st[node*2],st[node*2+1]);
+	}
 
-void updateRangeLazy(int *tree,int ss,int se,int l,int r,int inc,int index)
-{
-    // before going down resolve the value if it exists
-    if(lazy[index]!=0)
-    {
-        tree[index]+=lazy[index];
-        if(ss!=se)
-        {
-            lazy[2*index]+=lazy[index];
-            lazy[2*index+1]+=lazy[index];
-        }
-        lazy[index]=0; // Clear the lazy value at current node
-    }
-    // Base Case
-    if(l>se or r<ss)
-    {
-        return; // Case Of no overlap
-    }
+	void pUpdate(int node, int L, int R, int pos, int val)
+	{
+		if(cLazy[node])
+			propagate(node, L, R);
+		if(L == R)
+		{
+			cLazy[node] = 1;
+			lazy[node] = val;
+			propagate(node, L, R);
+			return;
+		}
+		int M = (L + R)/2;
+		if(pos <= M)
+			pUpdate(node*2, L, M, pos, val);
+		else
+			pUpdate(node*2 + 1, M + 1, R, pos, val);
+        st[node].merge(st[node*2],st[node*2+1]);
+	}
 
-    // Another Case- complete overlap case
-    if(ss>=l and se<=r)
-    {
-        tree[index]+=inc;   // As due to maxi and mini we not need casre about whole l r range
-        if(ss!=se)  // Create New lzy Value of child node
-        {
-            lazy[2*index]+=inc; // Passing inc to left Child
-            lazy[2*index+1]+=inc; // Passing inc to right Child
-        }
-        return; // Imp to avoid full update of tree
-    }
-    // partial Overlap
-    int mid=(ss+se)/2;
-    updateRangeLazy(tree,ss,mid,l,r,inc,2*index);
-    updateRangeLazy(tree,mid+1,se,l,r,inc,2*index+1);
-    tree[index]=min(tree[2*index],tree[2*index+1]);
-}
+	data query(int pos)
+	{
+		return pQuery(1, 1, N, pos);
+	}
 
-// Code For Query Lazy Function
+	data query(int l, int r)
+	{
+		return Query(1, 1, N, l, r);
+	}
 
-int queryLazy(int *tree,int ss,int se,int qs,int qe,int index)
-{
-     // Resolve the lazy value at current node
-    if(lazy[index]!=0)
-    {
-        tree[index]+=lazy[index];
-        if(ss!=se)  // Non Leaf Node
-        {
-            lazy[2*index]+=lazy[index];
-            lazy[2*index+1]+=lazy[index];
-        }
-        lazy[index]=0; // Clear the lazy value at current node
-    }
-    // Quety Logic
+	void update(int pos, int val)
+	{
+		pUpdate(1, 1, N, pos, val);
+	}
 
-    // No Overlap
-    if(ss>qe or se<qs)
-    {
-        INT_MAX;
-    }
-
-    // Complete Overlap
-    if(ss>=qs and se<=qe)
-    {
-        return tree[index];
-    }
-
-    // Partial Overlap
-    int mid=(ss+se)>>1;
-    int left=queryLazy(tree,ss,mid,qs,qe,index<<1);
-    int right=queryLazy(tree,mid+1,se,qs,qe,index<<1|1);
-    return min(left,right);
-}
-
-//TODO: Range Sum with Lazy Propagation
-
-
-void solve()
-{
-    int a[]={1,3,2,-5,6,4};
-    int n=sizeof(a)/sizeof(a[0]);
-    int *tree= new int [4*n+1];
-    build(a,0,n-1,tree,1);
-    // Let's Also Print the tree array
-    for(i=1;i<=13;i++)cout<<tree[i]<<" ";
-}
+	void update(int l, int r, int val)
+	{
+		Update(1, 1, N, l, r, val);
+	}
+};
