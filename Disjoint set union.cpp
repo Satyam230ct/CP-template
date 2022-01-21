@@ -16,10 +16,10 @@ public:
     {
         return (x==parent[x])?x:(parent[x]=get(parent[x]));
     }
-    void unite(int x,int y)
+    bool unite(int x,int y)
     {
         x=get(x);   y=get(y);
-        
+        if(x==y)return false;
         // Use Cycle Detection Only
 //         /*
         if(x!=y)
@@ -34,6 +34,7 @@ public:
         if(siz[x]<siz[y])swap(x,y);
         siz[x]+=siz[y]; parent[y]=x;
         */
+        return true;
     }
 };
 
