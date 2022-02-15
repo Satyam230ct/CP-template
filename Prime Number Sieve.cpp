@@ -5,7 +5,7 @@ vector<int> prime;
 
 const int N = 100000;
 int lp[N+1];
-void primes() {
+void sieve() {
     for (int i = 2; i <= N; ++i) {
         if (lp[i] == 0) {
             lp[i] = i;
@@ -21,7 +21,7 @@ void primes() {
 const int N7=10000000;
 bitset<10000007> b;
 
-void primes()
+void sieve()
 {
     // Set All Bits
     b.set();    //1,1,1,1,1,.....
