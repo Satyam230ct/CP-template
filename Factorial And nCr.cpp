@@ -1,6 +1,16 @@
 
 // Factorial Computation
 
+int add(int a,int b){
+    return (a+b)%mod;
+}
+int sub(int a,int b){
+    return (a-b+mod)%mod;
+}
+int mul(int a,int b){
+    return (a*b)%mod;
+}
+
 int poww(int a,int b)
     {if(b<=0)return (b==0); int res=1;
         while(b){ if(b&1)(res*=a)%=mod;  (a*=a)%=mod; b/=2;}return res;} 
