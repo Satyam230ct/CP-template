@@ -33,11 +33,27 @@ Now Multiply Both And see coefficient of x^k
 k= (n,0)*(m,k) + (n,1)*(m,k-1) + (n,2)*(m,k-2) + (n,3)*(m,k-3) + ........+ (n,k)*(m,0)
 (1+x)^(m+n) and see Coff odf x^k both are going to be same=> (n+m)C(k)
 
-3) 
+
 
 
 */
 
+// Count Number of Dearrangement of size n
+3) Permutation such that no element appears in its original position
+
+int countDer(int n)
+{
+    int der[n + 1] = {0};
+    
+    // Base cases
+    der[1] = 0;
+    der[2] = 1;
+ 
+    for (int i = 3; i <= n; ++i)       
+    der[i] = (i-1)*(der[i - 1]+der[i - 2]);
+ 
+    return der[n];
+}
 
 
 /*-----------------------------------Problem's-----------------------------------
