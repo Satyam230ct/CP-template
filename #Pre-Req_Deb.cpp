@@ -2,6 +2,7 @@
 #pragma GCC optimize("O3,unroll-loops")
 #pragma GCC target("avx2")
 
+
 //-----------------------------Debugger----------------------------------------
 
 // ----------------------✊Simping Time💦-----------------------------
@@ -24,6 +25,11 @@ template <class T, class V> void _print(const map<T,V> &v){cerr << "[ "; for (au
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 vector<int> get_horney(int n,int l=1,int h=10){int range_cover=h-l+1;
 vector<int> res(n); for(int i=0;i<n;i++)res[i]=l+rng()%range_cover;  return res;}
+
+
+// Timer
+TT=clock();
+cerr<<"\nTIME: "<<(long double)(clock()-TT)/CLOCKS_PER_SEC<<" sec\n";
 
 // -----------------------------Testing----------------------------------------
 int brute_solution(){
