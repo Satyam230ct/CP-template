@@ -1,4 +1,6 @@
 // z[i] Gives us the max prefix match value of from index i 
+// We can find max Prefix palindrome 
+// good = s + '$' + reverse(s) then the longes prefix is i+z[i]==n
 
 vector<int> z_algo(string const &s)
 {
