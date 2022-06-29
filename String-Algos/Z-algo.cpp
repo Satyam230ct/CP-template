@@ -1,3 +1,5 @@
+// z[i] Gives us the max prefix match value of from index i 
+
 vector<int> z_algo(string const &s)
 {
     int n=(int)s.size(),l=0,r=0;    
