@@ -2,32 +2,37 @@
 // We can find max Prefix palindrome 
 // good = s + '$' + reverse(s) then the longes prefix is i+z[i]==n
 
+
 vector<int> z_algo(string const &s)
 {
-    int n=(int)s.size(),l=0,r=0;    
-    vector<int> z(n,0);
-
+    vi z(n,0);  z[0]=0; // As we know don't have any meaning for 0th index
+    int l=0,r=0;
     for(int i=1;i<n;i++){
-        //Condition 1
+        // Condition 1
         if(i>r){
-            l=r=i;
-            while (r<n and s[r-l]==s[r])r++;    
-            r--; // To miss match last r fromt the loop
-            z[i]=r-i+1;
+            l=r=i;  // Now will star matching again from prefix
+            while (r<n and s[r-l]==s[r])r++;
+            r--;    // TO miss match the last unmatch index
+            z[i]=r-l+1; // This much size has been matched
         }
-        else{   // Condition 2 Else i<=r
-            int j=i-l; // Current index in the previous match
-            if(z[j]<r-i+1)z[i]=z[j];
-            else{
-                // The vale of z[i] can be more now
-                l=i;   // Now we already know r-l+1 already matching search for more
-                while(r<n and s[r-l]==s[r])r++;
-                r--; 
+        else
+        {
+            int pvz=z[i-l]; int canBe=r-i+1;
+            if(canBe>pvz){
+                z[i]=pvz;
+            }
+            else    // Time to extend boundaries
+            {
+                l=i;
+                while (r<n and s[r-l]==s[r])r++;
+                r--;
+                z[i]=r-l+1;
             }
         }
     }
     return z;
 }
+
 
 void Shiddat(int Case)
 {
