@@ -19,7 +19,8 @@ vector<int> z_algo(string const &s)
         {
             int pvz=z[i-l]; int canBe=r-i+1;
             if(canBe>pvz){
-                z[i]=pvz;
+                z[i]=pvz;      // 100% Xorrect because the same string l-r exist in suffix and in prev z[i] on that is less no 
+                // meaning to check futher for this i
             }
             else    // Time to extend boundaries
             {
